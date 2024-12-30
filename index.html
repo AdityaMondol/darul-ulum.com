@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়, টাঙ্গাইল সদর টাঙ্গাইলের একটি ঐতিহাসিক শিক্ষাপ্রতিষ্ঠান। আমাদের লক্ষ্য শিক্ষার্থীদের মানসম্মত শিক্ষা প্রদান।">
+    <meta name="keywords" content="দারুল উলুম, প্রাথমিক বিদ্যালয়, টাঙ্গাইল, শিক্ষা, সরকারি বিদ্যালয়">
+    <meta name="author" content="দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়">
+    <meta name="theme-color" content="#2c5282">
+    <meta property="og:title" content="দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়">
+    <meta property="og:description" content="টাঙ্গাইল সদরের ঐতিহাসিক শিক্ষাপ্রতিষ্ঠান">
+    <meta property="og:image" content="Darul.jpg">
+    <meta property="og:url" content="https://darululumschool.edu.bd">
+    <title>দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়, টাঙ্গাইল</title>
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="scripts.js" as="script">
+    <link rel="preload" href="Darul.jpg" as="image">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        header {
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background-color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header role="banner">
+        <div class="container">
+            <div class="header-content">
+                <h1>
+                    <i class="fas fa-graduation-cap"></i>
+                    দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়
+                </h1>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#home" aria-label="Home page"><i class="fas fa-home"></i> হোমপেইজ</a></li>
+                        <li><a href="#about" aria-label="About us"><i class="fas fa-info-circle"></i> আমাদের সম্পর্কে</a></li>
+                        <li><a href="#teachers" aria-label="Teachers"><i class="fas fa-chalkboard-teacher"></i> শিক্ষক</a></li>
+                        <li><a href="#notice" aria-label="Notice board"><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</a></li>
+                        <li><a href="#motamot" aria-label="Feedback"><i class="fas fa-comments"></i> মতামত</a></li>
+                        <li><a href="#media" aria-label="Media"><i class="fas fa-photo-video"></i> মিডিয়া</a></li>
+                        <li><a href="#contact" aria-label="Contact us"><i class="fas fa-envelope"></i> যোগাযোগ</a></li>
+                        <li class="user-section">
+                            <button id="login-signup-btn" class="btn primary-btn" aria-label="Login or Signup" onclick="showLoginModal()">
+                                <i class="fas fa-user"></i>
+                                <span class="user-display-name">USER</span>
+                                <span class="login-text">লগইন / সাইনআপ</span>
+                            </button>
+                            <div id="user-profile" class="user-profile hidden">
+                                <div class="profile-container">
+                                    <img id="profile-pic" src="default-avatar.png" alt="প্রোফাইল ছবি" class="profile-pic">
+                                    <div class="user-info-header">
+                                        <span id="user-name" class="user-name"></span>
+                                        <span id="user-role" class="user-role"></span>
+                                    </div>
+                                </div>
+                                <div class="profile-dropdown">
+                                    <button id="logout-btn" class="btn primary-btn" aria-label="Logout">
+                                        <i class="fas fa-sign-out-alt"></i> লগ আউট
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div id="login-modal" class="modal" style="display: none;">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" placeholder="First Name" required>
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" placeholder="Last Name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Email" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Password" required>
+            <label for="role">Select Role:</label>
+            <div class="role-selection">
+                <input type="radio" id="role-student" name="role" value="Student" required>
+                <label for="role-student">Student</label>
+                <input type="radio" id="role-teacher" name="role" value="Teacher">
+                <label for="role-teacher">Teacher</label>
+                <input type="radio" id="role-guardian" name="role" value="Guardian">
+                <label for="role-guardian">Guardian</label>
+            </div>
+            <button type="submit" id="submitBtn">Login</button>
+        </form>
+        <button id="cancelLogin">Cancel</button>
+    </div>
+
+    <div id="signup-modal" class="modal" style="display: none;">
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <input type="text" id="signup-first-name" placeholder="First Name" required>
+            <input type="text" id="signup-last-name" placeholder="Last Name" required>
+            <input type="email" id="signup-email" placeholder="Email" required>
+            <input type="password" id="signup-password" placeholder="Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <button id="cancelSignup">Cancel</button>
+    </div>
+
+    <section class="banner-section">
+        <div class="container">
+            <div class="banner">
+                <img src="Darul.jpg" alt="দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়ের ছবি" class="banner-img" id="school-banner">
+            </div>
+        </div>
+    </section>
+
+    <div id="photo-modal" class="modal">
+        <span class="close-btn" id="close-modal"><i class="fas fa-times"></i></span>
+        <img src="Darul.jpg" alt="দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়ের ছবি" id="modal-image">
+    </div>
+
+    <main id="main-content" role="main">
+        <section id="home" class="section-card">
+            <div class="container">
+                <h2><i class="fas fa-star"></i> স্বাগতম</h2>
+                <div class="content-card">
+                    <p>দারুল উলুম সরকারি প্রাথমিক বিদ্যালয়, টাঙ্গাইল সদর টাঙ্গাইলের একটি উল্লেখযোগ্য শিক্ষাপ্রতিষ্ঠান। এটি টাঙ্গাইলের বহু পুরাতন ও ঐতিহাসিক বিদ্যালয়গুলোর মধ্যে অন্যতম।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section-card">
+            <div class="container">
+                <h2><i class="fas fa-info-circle"></i> আমাদের সম্পর্কে</h2>
+                <div class="content-card">
+                    <p>দারুল উলুম সরকারি প্রাথমিক বিদ্যালয় একটি ঐতিহাসিক শিক্ষা প্রতিষ্ঠান যা প্রাথমিক শিক্ষার মান উন্নয়নে অগ্রণী ভূমিকা পালন করে আসছে। বিদ্যালয়ের লক্ষ্য শিক্ষার্থীদের মানসম্মত শিক্ষা প্রদান এবং তাদের একটি উজ্জ্বল ভবিষ্যৎ নিশ্চিত করা।</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="teachers" class="section-card">
+            <div class="container">
+                <h2><i class="fas fa-chalkboard-teacher"></i> শিক্ষক</h2>
+                <div class="content-card">
+                    <div class="head-teacher-section">
+                        <h3><i class="fas fa-user-tie"></i> প্রধান শিক্ষক</h3>
+                        <div class="teacher-card">
+                            <div class="teacher-image">
+                                <img src="teacher1.jpg" alt="প্রধান শিক্ষক" class="profile-image">
+                            </div>
+                            <div class="teacher-info">
+                                <h4>আসরিন সিদ্দিকী</h4>
+                                <p class="designation">প্রধান শিক্ষক</p>
+                                <p class="education">এম.এ, বি.এড</p>
+                                <div class="contact-info">
+                                    <p><i class="fas fa-phone"></i> +৮৮০-১৭১২-৩৪৫৬৭৮</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assistant-teacher-section">
+                        <h3><i class="fas fa-users"></i> সহকারী শিক্ষক</h3>
+                        <div class="teacher-grid">
+                            <div class="teacher-card">
+                                <div class="teacher-image">
+                                    <img src="teacher2.jpg" alt="Assistant Teacher" class="profile-image">
+                                </div>
+                                <div class="teacher-info">
+                                    <h4>মুনমুন আক্তার</h4>
+                                    <p class="designation">সহকারী শিক্ষক</p>
+                                    <p class="education">বি.এ, বি.এড</p>
+                                </div>
+                            </div>
+
+                            <div class="teacher-card">
+                                <div class="teacher-image">
+                                    <img src="teacher3.jpg" alt="Assistant Teacher" class="profile-image">
+                                </div>
+                                <div class="teacher-info">
+                                    <h4>ইনারা বেগম</h4>
+                                    <p class="designation">সহকারী শিক্ষক</p>
+                                    <p class="education">বি.এ, বি.এড</p>
+                                </div>
+                            </div>
+
+                            <div class="teacher-card">
+                                <div class="teacher-image">
+                                    <img src="all.jpg" alt="Assistant Teacher" class="profile-image">
+                                </div>
+                                <div class="teacher-info">
+                                    <h4>সালমা আক্তার</h4>
+                                    <p class="designation">সহকারী শিক্ষক</p>
+                                    <p class="education">বি.এ, বি.এড</p>
+                                </div>
+                            </div>
+                            <div class="teacher-card">
+                                <div class="teacher-image">
+                                    <img src="shilpi.jpg" alt="Assistant Teacher" class="profile-image">
+                                </div>
+                                <div class="teacher-info">
+                                    <h4>শিল্পী রানী কর্মকার</h4>
+                                    <p class="designation">সহকারী শিক্ষক</p>
+                                    <p class="education">বি.এ, বি.এড</p>
+                                </div>
+                            </div>
+                            <div class="teacher-card">
+                                <div class="teacher-image">
+                                    <img src="and.jpg" alt="Assistant Teacher" class="profile-image">
+                                </div>
+                                <div class="teacher-info">
+                                    <h4>রাশেদা আনসারী</h4>
+                                    <p class="designation">সহকারী শিক্ষক</p>
+                                    <p class="education">বি.এ, বি.এড</p>
+                                </div>
+                            </div>
+                            <div class="teacher-card">
+                                <div class="teacher-image">
+                                    <img src="two.jpg" alt="Assistant Teacher" class="profile-image">
+                                </div>
+                                <div class="teacher-info">
+                                    <h4>আসমা আক্তার</h4>
+                                    <p class="designation">সহকারী শিক্ষক</p>
+                                    <p class="education">বি.এ, বি.এড</p>
+                                </div>
+                            </div>
+                            <div class="teacher-card">
+                                <div class="teacher-image">
+                                    <img src="Misury.jpg" alt="Assistant Teacher" class="profile-image">
+                                </div>
+                                <div class="teacher-info">
+                                    <h4>সুমাইয়া নূর মিসৌরি</h4>
+                                    <p class="designation">সহকারী শিক্ষক</p>
+                                    <p class="education">বি.এ, বি.এড</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="notice" class="section-card">
+            <div class="container">
+                <h2><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</h2>
+                <div id="notices">
+                    <form id="noticeForm">
+                        <textarea id="notice-input" placeholder="আপনার নোটিশ এখানে লিখুন..." required></textarea>
+                        <button type="submit" id="add-notice-button" class="btn primary-btn">
+                            <i class="fas fa-plus"></i> নোটিশ যোগ করুন
+                        </button>
+                    </form>
+                    <div id="noticeList"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="motamot" class="section-card">
+            <div class="container">
+                <h2><i class="fas fa-comments"></i> মতামত</h2>
+                <div class="content-card">
+                    <textarea id="comment-input" placeholder="আপনার মতামত এখানে লিখুন..."></textarea>
+                    <button id="add-comment" class="btn primary-btn">মতামত যোগ করুন</button>
+                    <ul id="comment-list"></ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="media" class="section-card">
+            <div class="container">
+                <h2><i class="fas fa-photo-video"></i> মিডিয়া</h2>
+                <div class="content-card">
+                    <input type="file" id="media-upload" accept="image/*,video/*">
+                    <button id="upload-media" class="btn primary-btn">মিডিয়া আপলোড করুন</button>
+                    <div id="media-gallery"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact" class="section-card">
+            <div class="container">
+                <h2><i class="fas fa-envelope"></i> যোগাযোগ</h2>
+                <div class="content-card contact-info">
+                    <address>
+                        <p>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <strong>ঠিকানা:</strong> আলিয়া মাদ্রাসা রোড, টাঙ্গাইল সদর, টাঙ্গাইল।
+                        </p>
+                        <p>
+                            <i class="fas fa-phone"></i>
+                            <strong>ফোন:</strong>
+                            <a href="tel:01716182101">01716-182101</a>
+                        </p>
+                        <p>
+                            <i class="fas fa-envelope"></i>
+                            <strong>ইমেইল:</strong>
+                            <a href="mailto:darululamgovtschool@gmail.com">darululamgovtschool@gmail.com</a>
+                        </p>
+                    </address>
+                </div>
+            </div>
+        </section>
+        
+
+    <footer role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <p>
+                    <i class="fas fa-copyright"></i> 
+                    ২০২৪ দারুল উলুম। সর্বস্বত্ব সংরক্ষিত।
+                </p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
