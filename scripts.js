@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const state = {
-    loggedInUser: null,
+    loggedInUser: JSON.parse(localStorage.getItem("loggedInUser")) || null,
     googleUser: null,
   };
 
@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = getFormData(["first-name", "last-name", "email", "password"]);
     const role = document.querySelector("input[name='role']:checked")?.value;
 
-    // Ensure the login form submission is handled correctly and provide feedback to the user
     const validationErrors = {};
     Object.keys(formData).forEach((field) => {
       if (formData[field] === "") {
@@ -176,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function addNoticeToDOM(notice) {
     const noticeItem = document.createElement("div");
-    noticeItem.id = `notice-${notice.id}`; 
+    noticeItem.id = `notice-${notice.id}`;
     noticeItem.className = "notice-item";
     noticeItem.innerHTML = `
       <p>${notice.content}</p>
@@ -225,217 +224,33 @@ document.addEventListener("DOMContentLoaded", () => {
   function deleteItem(noticeId) {
     const noticeElement = document.getElementById(`notice-${noticeId}`);
     if (noticeElement) {
-        noticeElement.remove(); // Remove the notice from the DOM
-        // Optionally, also remove it from the data source if applicable
-        // For example, update the notices array and re-render the list
-        const existingNotices = loadFromLocalStorage("notices", []);
-        const updatedNotices = existingNotices.filter(item => item.id !== noticeId.replace("notice-", ""));
-        saveToLocalStorage("notices", updatedNotices);
+      noticeElement.remove();
+      const existingNotices = loadFromLocalStorage("notices", []);
+      const updatedNotices = existingNotices.filter(item => item.id !== noticeId.replace("notice-", ""));
+      saveToLocalStorage("notices", updatedNotices);
     }
   }
 
   document.querySelectorAll('.notice .delete-btn').forEach(button => {
     button.addEventListener('click', function() {
-        const noticeId = this.getAttribute('data-id');
-        const noticeGiver = document.getElementById(`notice-${noticeId}`).querySelector('.notice-giver-name').textContent;
-        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')).name;
+      const noticeId = this.getAttribute('data-id');
+      const noticeGiver = document.getElementById(`notice-${noticeId}`).querySelector('.notice-giver-name').textContent;
+      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')).name;
 
-        // Debugging: Log the notice giver and logged-in user
-        console.log('Notice Giver:', noticeGiver);
-        console.log('Logged In User:', loggedInUser);
-
-        if (noticeGiver !== loggedInUser) {
-            alert('You cannot delete this notice. Only the notice giver can delete this notice.');
-            return;
-        }
-
-        // Call deleteItem function to delete the notice
-        deleteItem(noticeId);
-    });
-  });
-
-  const noticeList = document.getElementById('noticeList');
-  noticeList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('delete-btn')) {
-      const noticeId = e.target.getAttribute('data-id');
-      // Call API to delete notice
-      console.log(`Delete notice with id ${noticeId}`);
-    }
-  });
-
-  const commentList = document.getElementById('comment-list');
-  commentList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('delete-btn')) {
-      const commentId = e.target.getAttribute('data-id');
-      // Call API to delete comment
-      console.log(`Delete comment with id ${commentId}`);
-    }
-  });
-
-  const mediaGallery = document.getElementById('media-gallery');
-  mediaGallery.addEventListener('click', (e) => {
-    if (e.target.classList.contains('delete-btn')) {
-      const mediaId = e.target.getAttribute('data-id');
-      // Call API to delete media item
-      console.log(`Delete media item with id ${mediaId}`);
-    }
-  });
-
-  const loginForm = document.getElementById('loginForm');
-
-  if (loginForm) {
-    loginForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent the default form submission
-
-      // Get input values
-      const firstName = document.getElementById('first-name').value;
-      const lastName = document.getElementById('last-name').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      // Debugging: Log input values
-      console.log('First Name:', firstName);
-      console.log('Last Name:', lastName);
-      console.log('Email:', email);
-      console.log('Password:', password);
-
-      // Alert to confirm form submission
-      alert('Form submitted!');
-
-      // Validate inputs
-      if (firstName && lastName && email && password) {
-        // Simulate a successful login
-        alert('Login successful! Welcome, ' + firstName + ' ' + lastName + '!');
-
-        // Update the UI to show the profile icon
-        const profileIcon = document.createElement('div');
-        profileIcon.className = 'profile-icon';
-        profileIcon.style.backgroundColor = 'blue';
-        profileIcon.style.color = 'white';
-        profileIcon.style.borderRadius = '50%';
-        profileIcon.style.width = '40px';
-        profileIcon.style.height = '40px';
-        profileIcon.style.display = 'flex';
-        profileIcon.style.alignItems = 'center';
-        profileIcon.style.justifyContent = 'center';
-        profileIcon.innerText = firstName.charAt(0) + lastName.charAt(0);
-
-        // Replace login/signup button with profile icon
-        const loginSignupBtn = document.getElementById('login-signup-btn');
-        if (loginSignupBtn) {
-          loginSignupBtn.style.display = 'none';
-          loginSignupBtn.parentNode.insertBefore(profileIcon, loginSignupBtn.nextSibling);
-        }
-
-        // Optionally, you can redirect to another page or update the UI
-        // window.location.href = 'homepage.html'; // Example redirect
-      } else {
-        alert('Please fill in all required fields.');
+      if (noticeGiver !== loggedInUser) {
+        alert('You cannot delete this notice. Only the notice giver can delete this notice.');
+        return;
       }
+
+      deleteItem(noticeId);
     });
-  }
-
-  // Add event listener for notice form submission
-  const noticeForm = document.getElementById('noticeForm');
-  if (noticeForm) {
-    noticeForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent the default form submission
-
-      const noticeContent = document.getElementById('notice-input').value;
-      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
-      // Validate input
-      if (noticeContent && loggedInUser) {
-        const notice = {
-          id: Date.now(),
-          content: noticeContent,
-          user: loggedInUser.name,
-          date: new Date().toLocaleString(),
-        };
-
-        // Save notice to local storage
-        const existingNotices = loadFromLocalStorage('notices', []);
-        existingNotices.push(notice);
-        saveToLocalStorage('notices', existingNotices);
-
-        // Update the UI to display the new notice
-        addNoticeToDOM(notice);
-        noticeForm.reset(); // Clear the input field after submission
-      } else {
-        alert('Please enter a notice.');
-      }
-    });
-  }
-
-  // Add event listener for comment form submission
-  const commentForm = document.getElementById('commentForm');
-  if (commentForm) {
-    commentForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent the default form submission
-
-      const commentContent = document.getElementById('comment-input').value;
-      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
-      // Validate input
-      if (commentContent && loggedInUser) {
-        const comment = {
-          id: Date.now(),
-          content: commentContent,
-          user: loggedInUser.name,
-          date: new Date().toLocaleString(),
-        };
-
-        // Save comment to local storage
-        const existingComments = loadFromLocalStorage('comments', []);
-        existingComments.push(comment);
-        saveToLocalStorage('comments', existingComments);
-
-        // Update the UI to display the new comment
-        addCommentToDOM(comment);
-        commentForm.reset(); // Clear the input field after submission
-      } else {
-        alert('Please enter a comment.');
-      }
-    });
-  }
-
-  // Add event listener for media upload
-  const mediaForm = document.getElementById('mediaForm');
-  if (mediaForm) {
-    mediaForm.addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent the default form submission
-
-      const mediaInput = document.getElementById('media-upload');
-      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
-      // Validate input
-      if (mediaInput.files.length > 0 && loggedInUser) {
-        const mediaFile = mediaInput.files[0];
-        const media = {
-          id: Date.now(),
-          url: URL.createObjectURL(mediaFile),
-          user: loggedInUser.name,
-          date: new Date().toLocaleString(),
-        };
-
-        // Save media to local storage
-        const existingMedia = loadFromLocalStorage('media', []);
-        existingMedia.push(media);
-        saveToLocalStorage('media', existingMedia);
-
-        // Update the UI to display the new media
-        addMediaToDOM(media);
-        mediaForm.reset(); // Clear the input field after submission
-      } else {
-        alert('Please upload a media file.');
-      }
-    });
-  }
-
-  // Make the login permanent
-  window.addEventListener('beforeunload', () => {
-    localStorage.setItem('userLoggedIn', 'true');
   });
+
+  if (state.loggedInUser) {
+    updateProfileSection();
+    hideElement(DOM.loginSignupBtn);
+    showElement(DOM.profileSection);
+  }
 
   initializeEventListeners();
 });
