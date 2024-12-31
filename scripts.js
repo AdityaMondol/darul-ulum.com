@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mediaUploadForm: document.getElementById("media-upload"),
     mediaGallery: document.getElementById("media-gallery"),
     loadingSpinner: document.getElementById("loading-spinner"),
+    userInitials: document.getElementById("user-initials"), // New element for user initials
   };
 
   function initializeEventListeners() {
@@ -126,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleModal(DOM.loginModal, false);
         hideElement(DOM.loginSignupBtn);
         showElement(DOM.profileSection);
+        showUserInitials(formData["first-name"], formData["last-name"]);
         showInlineNotification(result.message, "success");
       } else {
         showInlineNotification(result.message, "error");
@@ -140,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     hideElement(DOM.profileSection);
     showElement(DOM.loginSignupBtn);
+    hideElement(DOM.userInitials);
 
     showInlineNotification("You have been logged out.", "success");
   }
@@ -151,6 +154,21 @@ document.addEventListener("DOMContentLoaded", () => {
     DOM.userName.textContent = stateManager.getState("loggedInUser").name;
     DOM.userRole.textContent = stateManager.getState("loggedInUser").role;
     showElement(DOM.profileSection);
+  }
+
+  function showUserInitials(firstName, lastName) {
+    const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
+    DOM.userInitials.textContent = initials.toUpperCase();
+    DOM.userInitials.style.display = "flex";
+    DOM.userInitials.style.backgroundColor = "#007bff";
+    DOM.userInitials.style.color = "#ffffff";
+    DOM.userInitials.style.borderRadius = "50%";
+    DOM.userInitials.style.width = "40px";
+    DOM.userInitials.style.height = "40px";
+    DOM.userInitials.style.justifyContent = "center";
+    DOM.userInitials.style.alignItems = "center";
+    DOM.userInitials.style.fontSize = "20px";
+    DOM.userInitials.style.fontWeight = "bold";
   }
 
   function handleNoticeSubmission() {
