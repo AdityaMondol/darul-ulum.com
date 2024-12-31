@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
 
     const formData = getFormData(["first-name", "last-name", "email", "password"]);
@@ -98,19 +98,41 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    stateManager.setState("loggedInUser", {
-      name: `${formData["first-name"]} ${formData["last-name"]}`,
-      email: formData.email,
-      role,
-      profilePicture: stateManager.getState("googleUser")
-        ? stateManager.getState("googleUser").getBasicProfile().getImageUrl()
-        : "https://via.placeholder.com/100",
-    });
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
 
-    updateProfileSection();
-    toggleModal(DOM.loginModal, false);
-    hideElement(DOM.loginSignupBtn);
-    showElement(DOM.profileSection);
+      const result = await response.json();
+
+      if (response.ok) {
+        stateManager.setState("loggedInUser", {
+          name: `${formData["first-name"]} ${formData["last-name"]}`,
+          email: formData.email,
+          role,
+          profilePicture: stateManager.getState("googleUser")
+            ? stateManager.getState("googleUser").getBasicProfile().getImageUrl()
+            : "https://via.placeholder.com/100",
+        });
+
+        updateProfileSection();
+        toggleModal(DOM.loginModal, false);
+        hideElement(DOM.loginSignupBtn);
+        showElement(DOM.profileSection);
+        showInlineNotification(result.message, "success");
+      } else {
+        showInlineNotification(result.message, "error");
+      }
+    } catch (error) {
+      showInlineNotification('Failed to login. Please try again.', 'error');
+    }
   }
 
   function handleLogout() {
