@@ -25,7 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function initializeEventListeners() {
-    if (DOM.loginForm) DOM.loginForm.addEventListener("submit", handleLogin);
+    if (DOM.loginForm) {
+      console.log("Login form found, attaching event listener.");
+      DOM.loginForm.addEventListener("submit", handleLogin);
+    }
 
     if (DOM.cancelLoginBtn) {
       DOM.cancelLoginBtn.addEventListener("click", () => toggleModal(DOM.loginModal, false));
@@ -50,9 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleLogin(event) {
     event.preventDefault();
+    console.log("Login form submitted.");
 
     const formData = getFormData(["first-name", "last-name", "email", "password"]);
+    console.log("Form Data:", formData);
     const role = document.querySelector("input[name='role']:checked")?.value;
+    console.log("Selected Role:", role);
 
     const validationErrors = {};
     Object.keys(formData).forEach((field) => {
@@ -184,6 +190,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <span class="notice-giver-name">${notice.user}</span>
     `;
     DOM.noticeList.appendChild(noticeItem);
+
+    const deleteBtn = noticeItem.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", () => deleteNotice(notice.id));
   }
 
   function addCommentToDOM(comment) {
@@ -195,6 +204,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <button class="delete-btn" data-id="${comment.id}">Delete</button>
     `;
     DOM.commentList.appendChild(commentItem);
+
+    const deleteBtn = commentItem.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", () => deleteComment(comment.id));
   }
 
   function getFormData(fields) {
@@ -221,30 +233,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (element) element.style.display = "none";
   }
 
-  function deleteItem(noticeId) {
+  function deleteNotice(noticeId) {
+    if (!confirm("Are you sure you want to delete this notice?")) return;
+
     const noticeElement = document.getElementById(`notice-${noticeId}`);
     if (noticeElement) {
       noticeElement.remove();
       const existingNotices = loadFromLocalStorage("notices", []);
-      const updatedNotices = existingNotices.filter(item => item.id !== noticeId.replace("notice-", ""));
+      const updatedNotices = existingNotices.filter((item) => item.id !== noticeId);
       saveToLocalStorage("notices", updatedNotices);
     }
   }
 
-  document.querySelectorAll('.notice .delete-btn').forEach(button => {
-    button.addEventListener('click', function() {
-      const noticeId = this.getAttribute('data-id');
-      const noticeGiver = document.getElementById(`notice-${noticeId}`).querySelector('.notice-giver-name').textContent;
-      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser')).name;
+  function deleteComment(commentId) {
+    if (!confirm("Are you sure you want to delete this comment?")) return;
 
-      if (noticeGiver !== loggedInUser) {
-        alert('You cannot delete this notice. Only the notice giver can delete this notice.');
-        return;
-      }
-
-      deleteItem(noticeId);
-    });
-  });
+    const commentElement = document.getElementById(commentId);
+    if (commentElement) {
+      commentElement.remove();
+      const existingComments = loadFromLocalStorage("comments", []);
+      const updatedComments = existingComments.filter((item) => item.id !== commentId);
+      saveToLocalStorage("comments", updatedComments);
+    }
+  }
 
   if (state.loggedInUser) {
     updateProfileSection();
