@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleModal(DOM.loginModal, false);
         hideElement(DOM.loginSignupBtn);
         showElement(DOM.profileSection);
-        showUserInitials(formData["first-name"], formData["last-name"]);
+        showUserInitials(formData["first-name"]); // Show the first letter of the name
         showInlineNotification(result.message, "success");
       } else {
         showInlineNotification(result.message, "error");
@@ -156,9 +156,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showElement(DOM.profileSection);
   }
 
-  function showUserInitials(firstName, lastName) {
-    const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
-    DOM.userInitials.textContent = initials.toUpperCase();
+  function showUserInitials(firstName) {
+    const initial = firstName.charAt(0);
+    DOM.userInitials.textContent = initial.toUpperCase();
     DOM.userInitials.style.display = "flex";
     DOM.userInitials.style.backgroundColor = "#007bff";
     DOM.userInitials.style.color = "#ffffff";
